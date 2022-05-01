@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset maxim:2
+--changeset v:2
 CREATE TABLE roles
 (
     id              serial              PRIMARY KEY,

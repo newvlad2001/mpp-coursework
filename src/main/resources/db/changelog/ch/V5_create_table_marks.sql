@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset maxim:7
+--changeset v:7
 CREATE TABLE marks
 (
     id              serial              PRIMARY KEY,

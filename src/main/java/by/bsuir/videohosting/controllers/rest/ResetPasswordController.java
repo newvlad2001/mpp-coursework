@@ -40,12 +40,12 @@ public class ResetPasswordController {
         try {
             User user = userService.generateResetToken(request.getEmail());
             mailService.send(request.getEmail(),
-                    "Восстановление пароля",
-                    "Ссылка для восстановление пароля: http://localhost:8080/reset?token=" + user.getToken() + "&id=" + user.getId());
+                    "Password recovery",
+                    "Link to recover your password: http://localhost:3001/reset?token=" + user.getToken() + "&id=" + user.getId());
 
             return ResponseJson.success().build();
         } catch (IOException e) {
-            return ResponseJson.error().withErrorMessage("Пользователя с такой почтой не существует");
+            return ResponseJson.error().withErrorMessage("User with such email does not exist");
         }
     }
 
@@ -53,7 +53,7 @@ public class ResetPasswordController {
     public ResponseEntity resetPassword(@RequestBody ResetPasswordRequest request) {
         User user = userRepository.findByIdAndToken(request.getId(), request.getToken()).orElse(null);
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Неверный токен восстановления пароля");
+            return ResponseJson.error().withErrorMessage("Incorrect token");
         }
         userService.setNewPassword(user, request.getNewPassword());
 

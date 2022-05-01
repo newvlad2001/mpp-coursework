@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset maxim:3
+--changeset v:3
 CREATE TABLE videos
 (
     id              varchar(36)         PRIMARY KEY,

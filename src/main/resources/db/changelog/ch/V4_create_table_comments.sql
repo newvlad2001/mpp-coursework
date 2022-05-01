@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset maxim:5
+--changeset v:5
 CREATE TABLE comments(
         id              serial              PRIMARY KEY,
         text            text                NOT NULL,

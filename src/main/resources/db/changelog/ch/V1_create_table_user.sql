@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset maxim:1
+--changeset v:1
 CREATE TABLE users
 (
     id              serial              PRIMARY KEY,
