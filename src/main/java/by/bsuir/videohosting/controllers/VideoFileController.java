@@ -57,7 +57,7 @@ public class VideoFileController {
                 return ResponseJson.error().build();
             }
             if (!jwtUser.getId().equals(ServletRequestUtils.getRequiredIntParameter(request, "userId"))) {
-                return ResponseJson.error().withErrorMessage("Неверный токен для данного пользователя");
+                return ResponseJson.error().withErrorMessage("Incorrect token");
             }
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
             InputStream stream = multipartRequest.getFile("file").getInputStream();
@@ -75,7 +75,7 @@ public class VideoFileController {
 
             User user = userRepository.findById(ServletRequestUtils.getRequiredIntParameter(request, "userId")).orElse(null);
             if (user == null) {
-                return ResponseJson.error().withErrorMessage("Такого пользвоателя не существует");
+                return ResponseJson.error().withErrorMessage("Such user does not exist");
             }
             Video video = videoRepository.save(
                     Video.builder()
@@ -89,7 +89,7 @@ public class VideoFileController {
             );
             return ResponseJson.success().withValue(VideoResponse.fromVideo(video));
         } catch (IOException | ServletRequestBindingException e) {
-            return ResponseJson.error().withErrorMessage("При загрузке файла появилась ошибка:" + e.getMessage());
+            return ResponseJson.error().withErrorMessage("Error while file loading:" + e.getMessage());
         }
     }
 }

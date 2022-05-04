@@ -38,13 +38,13 @@ public class VideoRestController {
     }
 
     /**
-     * Получить видео по id
+     * Get video by id
      */
     @GetMapping("{id}")
     public ResponseEntity<?> getVideo(@PathVariable String id) {
         Video video = videoRepository.findById(UUID.fromString(id)).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Видео не найдено");
+            return ResponseJson.error().withErrorMessage("Video not found");
         }
         video.setViews(video.getViews() + 1);
         videoRepository.save(video);
@@ -55,7 +55,7 @@ public class VideoRestController {
     }
 
     /**
-     * Получить все видео
+     * Get all videos
      */
     @GetMapping
     public Page<VideoResponse> getVideo(Pageable pageable, @RequestParam(required = false) String name) {
@@ -69,13 +69,13 @@ public class VideoRestController {
     }
 
     /**
-     * Получить видео пользователя
+     * Get user`s videos
      */
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getVideoByUser(@PathVariable Integer id, @AuthenticationPrincipal JwtUser jwtUser) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null)
-            return ResponseJson.error().withErrorMessage("Такой пользователь не существует");
+            return ResponseJson.error().withErrorMessage("Such user does not exist");
         List<Video> videos =
                 jwtUser != null && jwtUser.getId().equals(user.getId()) ?
                         videoRepository.findByUser(user) :
@@ -88,7 +88,7 @@ public class VideoRestController {
     }
 
     /**
-     * Удалить видео
+     * Delete video
      */
     @IsUser
     @DeleteMapping("{id}")
@@ -96,7 +96,7 @@ public class VideoRestController {
                                          @AuthenticationPrincipal JwtUser jwtUser) throws IOException {
         Video video = videoRepository.findById(UUID.fromString(id)).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Видео не найдено");
+            return ResponseJson.error().withErrorMessage("Video not found");
         }
 
         User user = userRepository.findById(jwtUser.getId()).orElse(null);
@@ -106,11 +106,11 @@ public class VideoRestController {
             videoRepository.delete(video);
             return ResponseJson.success().build();
         }
-        return ResponseJson.error().withErrorMessage("Удаление невозможно");
+        return ResponseJson.error().withErrorMessage("Can`t delete");
     }
 
     /**
-     * Изменить видео
+     * Edit video
      */
     @IsUser
     @PutMapping("{id}")
@@ -119,7 +119,7 @@ public class VideoRestController {
                                          @AuthenticationPrincipal JwtUser jwtUser) {
         Video video = videoRepository.findById(UUID.fromString(id)).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Видео не найдено");
+            return ResponseJson.error().withErrorMessage("Video not found");
         }
 
         User user = userRepository.findById(jwtUser.getId()).orElse(null);
@@ -131,6 +131,6 @@ public class VideoRestController {
             videoRepository.save(video);
             return ResponseJson.success().build();
         }
-        return ResponseJson.error().withErrorMessage("Изменение невозможно");
+        return ResponseJson.error().withErrorMessage("Can`t edit");
     }
 }

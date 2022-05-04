@@ -35,11 +35,11 @@ public class MarkRestController {
     public ResponseEntity createOrUpdateMark(@RequestBody CreateMarkRequest request) {
         User user = userRepository.findById(request.getUserId()).orElse(null);
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Такого пользователя не существует");
+            return ResponseJson.error().withErrorMessage("Such user don`t exist");
         }
         Video video = videoRepository.findById(UUID.fromString(request.getVideoId())).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Такого видео не существует");
+            return ResponseJson.error().withErrorMessage("Such video don`t exist");
         }
         Mark mark = markRepository.findByUserAndVideo(user, video);
         if (mark != null) {
@@ -64,11 +64,11 @@ public class MarkRestController {
     public ResponseEntity getMark(@PathVariable String videoId, @PathVariable Integer userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Такого пользователя не существует");
+            return ResponseJson.error().withErrorMessage("Such user does not exist");
         }
         Video video = videoRepository.findById(UUID.fromString(videoId)).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Такого видео не существует");
+            return ResponseJson.error().withErrorMessage("Such video don`t exist");
         }
         Mark mark = markRepository.findByUserAndVideo(user, video);
         return ResponseJson.success().withValue(MarkResponse.builder()
@@ -83,7 +83,7 @@ public class MarkRestController {
     public ResponseEntity getMark(@PathVariable String videoId) {
         Video video = videoRepository.findById(UUID.fromString(videoId)).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Такого видео не существует");
+            return ResponseJson.error().withErrorMessage("Such video don`t exist");
         }
         return ResponseJson.success().withValue(MarkResponse.builder()
                 .dislikes((int)markRepository.countByVideoAndMark(video, Mark.DISLIKE))

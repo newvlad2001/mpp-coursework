@@ -28,7 +28,7 @@ public class RegisterRestController {
         User userFromDbName = userService.findByName(registerRequest.getUsername());
         User userFromDbEmail = userRepository.findByEmail(registerRequest.getEmail()).orElse(null);
         if (userFromDbName != null || userFromDbEmail != null) {
-            return ResponseJson.error().withErrorMessage("Такой пользователь уже существует");
+            return ResponseJson.error().withErrorMessage("Such user already exist");
         }
 
         User regUser = userService.register(registerRequest.toUser());

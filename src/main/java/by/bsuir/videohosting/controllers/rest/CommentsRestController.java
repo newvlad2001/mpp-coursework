@@ -36,7 +36,7 @@ public class CommentsRestController {
     public ResponseEntity getCommentsByVideo(@PathVariable String id) {
         Video video = videoRepository.findById(UUID.fromString(id)).orElse(null);
         if (video == null) {
-            return ResponseJson.error().withErrorMessage("Видео не найдено");
+            return ResponseJson.error().withErrorMessage("Video not found");
         }
 
         List<Comment> comments = commentRepository.findByVideo(video);
@@ -49,10 +49,10 @@ public class CommentsRestController {
     public ResponseEntity createCommentFroVideo(@RequestBody CreateCommentRequest request) {
         User user = userRepository.findById(request.getUser_id()).orElse(null);
         if (user == null)
-            return ResponseJson.error().withErrorMessage("Пользователь не найден");
+            return ResponseJson.error().withErrorMessage("User not found");
         Video video = videoRepository.findById(UUID.fromString(request.getVideo_id())).orElse(null);
         if (video == null)
-            return ResponseJson.error().withErrorMessage("Видео не найдено");
+            return ResponseJson.error().withErrorMessage("Video not found");
 
         Comment comment = Comment.builder()
                 .text(request.getText())

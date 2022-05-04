@@ -69,7 +69,7 @@ public class AuthRestController {
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Неверный логин или пароль");
+            throw new BadCredentialsException("Incorrect login or password");
         }
     }
 
@@ -81,12 +81,12 @@ public class AuthRestController {
         User user = userRepository.findById(jwtUser.getId()).orElse(null);
 
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Пользователь не найден");
+            return ResponseJson.error().withErrorMessage("User not found");
         }
 
         String token = jwtTokenProvider.resolveToken(request);
         if (!jwtTokenProvider.validateToken(token)) {
-            return ResponseJson.error().withErrorMessage("Токен неверный");
+            return ResponseJson.error().withErrorMessage("Incorrect token");
         }
         userService.logout(user, token);
 

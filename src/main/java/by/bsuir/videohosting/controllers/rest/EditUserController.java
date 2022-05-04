@@ -51,7 +51,7 @@ public class EditUserController {
         user.setImg(request.getImg());
         User userFromDb = userRepository.findByName(request.getUsername()).orElse(null);
         if (userFromDb != null && !userFromDb.getId().equals(user.getId())) {
-            return ResponseJson.error().withErrorMessage("Такой пользователь уже существует");
+            return ResponseJson.error().withErrorMessage("Such user already exist");
         }
         user = userRepository.save(user);
 
@@ -68,7 +68,7 @@ public class EditUserController {
                                         @RequestBody EditUserAdminRequest request) {
         User user = userRepository.findById(request.getUserId()).orElse(null);
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Такого пользователя не существует");
+            return ResponseJson.error().withErrorMessage("Such user does not exist");
         }
         if (request.getIsAdmin()) {
             if (user.getRoles().stream().noneMatch((role -> role.getName().equals("ROLE_ADMIN")))) {
@@ -87,7 +87,7 @@ public class EditUserController {
     public ResponseEntity getUser(@PathVariable int userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Такого пользователя не существует");
+            return ResponseJson.error().withErrorMessage("Such user does not exist");
         }
         return ResponseJson.success().withValue(UserResponse.fromUser(user));
     }
@@ -97,7 +97,7 @@ public class EditUserController {
     public ResponseEntity deleteUser(@PathVariable int userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            return ResponseJson.error().withErrorMessage("Такого пользователя не существует");
+            return ResponseJson.error().withErrorMessage("Such user does not exist");
         }
         videoRepository.findByUser(user).forEach(video -> {
             new File(".files/" + video.getVideo()).delete();

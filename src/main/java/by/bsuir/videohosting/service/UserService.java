@@ -47,7 +47,7 @@ public class UserService {
 
     public User changePassword(User user, String password, String newPassword, String token) throws Exception {
         if (!passwordEncoder.matches(password, user.getPasswordHash())) {
-            throw new Exception("Неверный пароль");
+            throw new Exception("Incorrect password");
         }
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         clearTokens(user, token);
